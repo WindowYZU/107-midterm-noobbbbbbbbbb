@@ -5,7 +5,10 @@
  */
 package lendle.courses.wp.midterm_wp;
 
+import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -14,9 +17,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.AccessibleAttribute;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -101,6 +109,12 @@ public class NewJFrame extends javax.swing.JFrame {
         try {
             jButton1.setEnabled(false);
             //從 combobox 抓出被選到的項目，存到變數裡
+             JFrame frame = new JFrame();
+             frame.setSize(300, 300);
+             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+             frame.setLayout(new FlowLayout());
+            
+           
             String selectedItem="";
             /////////////////////////////////////
             URL url = new URL(selectedItem);
@@ -118,7 +132,9 @@ public class NewJFrame extends javax.swing.JFrame {
                         progress.setVisible(false);
                         jButton1.setEnabled(true);
                         //將下載好的項目加入到 jList 裡面
-                        
+                        DefaultListModel model=(DefaultListModel) jList1.getModel();
+                        model.addElement(jComboBox1.getSelectedItem());
+                        jList1.updateUI();
                         ////////////////////////////
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
@@ -126,7 +142,20 @@ public class NewJFrame extends javax.swing.JFrame {
                                 try {
                                     URL fileURL=tempFile.toURI().toURL();
                                     //利用 fileURL 將 image icon 加到 jLabel2
+                                    JTextField textField = new JTextField(20);
+                                    ImageIcon icon=new ImageIcon(
+                                     new URL(""));
+                                    Image img=icon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+                                    Icon icon2=new ImageIcon(img);
+                                    jLabel2.setIcon(icon2);
+            
                                     ////////////////////////////////////////
+                                    frame.add(jLabel2);
+                                    frame.add(textField);
+                                    frame.setSize(800, 500);
+                                    frame.setVisible(true);
+                                  
+                                 
                                     jList1.updateUI();
                                 } catch (Exception ex) {
                                     Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
